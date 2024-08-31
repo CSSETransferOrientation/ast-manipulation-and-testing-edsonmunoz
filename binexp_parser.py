@@ -22,6 +22,7 @@ class BinOpAst():
         Initialize a binary operator AST from a given list in prefix notation.
         Destroys the list that is passed in.
         """
+       
         self.val = prefix_list.pop(0)
         if self.val.isnumeric():
             self.type = NodeType.number
@@ -83,8 +84,26 @@ class BinOpAst():
         Reduce additive identities
         x + 0 = x
         """
+                
         # IMPLEMENT ME!
-        pass
+        if self.type == NodeType.operator:
+            self.left.additive_identity()
+            self.right.additive_identity()
+            if self.val == "+":
+                if self.left.val == "0":
+                    self.val = self.right.val
+                    self.type = self.right.type
+                    self.left = self.right.left
+                    self.right = self.right.right
+                    return
+                elif self.right.val == "0":
+                    self.val = self.left.val
+                    self.type = self.left.type
+                    self.right = self.left.right
+                    self.left = self.left.left
+                    return
+        return
+                
                         
     def multiplicative_identity(self):
         """
@@ -92,7 +111,23 @@ class BinOpAst():
         x * 1 = x
         """
         # IMPLEMENT ME!
-        pass
+        if self.type == NodeType.operator:
+            self.left.multiplicative_identity()
+            self.right.multiplicative_identity()
+            if self.val == "*":
+                if self.left.val == "1":
+                    self.val = self.right.val
+                    self.type = self.right.type
+                    self.left = self.right.left
+                    self.right = self.right.right
+                    return
+                elif self.right.val == "1":
+                    self.val = self.left.val
+                    self.type = self.left.type
+                    self.right = self.left.right
+                    self.left = self.left.left
+                    return
+        return
     
     
     def mult_by_zero(self):
@@ -124,9 +159,34 @@ class BinOpAst():
         """
         self.additive_identity()
         self.multiplicative_identity()
-        self.mult_by_zero()
-        self.constant_fold()
+        #self.mult_by_zero()
+        #self.constant_fold()
+        return self
+
+class BinOpsTesting(unittest.TestCase):
+    def test_additive_identity(self):
+        with open(osjoin("testbench", "arith_id", "inputs", "simple")) as f:
+            input = f.read().strip()
+        with open(osjoin("testbench", "arith_id", "outputs", "simple")) as f:
+            output = f.read().strip()
+            with self.subTest(msg=f"Testing Additive Identity", input = input, output = output):
+                ast = BinOpAst(input.split())
+                ast.simplify_binops()
+                self.assertEqual(ast.prefix_str(), output)
+    def test_multiplicative_identity(self):
+        with open(osjoin("testbench", "arith_id", "inputs", "simple")) as f:
+            input = f.read().strip()
+        with open(osjoin("testbench", "arith_id", "outputs", "simple")) as f:
+            output = f.read().strip()
+            with self.subTest(msg=f"Testing Multiplicative Identity", input = input, output = output):
+                ast = BinOpAst(input.split())
+                ast.simplify_binops()
+                self.assertEqual(ast.prefix_str(), output)
+            
+    
 
 
 if __name__ == "__main__":
+    test = BinOpAst(["*", "1", "*", "1", "6"])
+    print(test.simplify_binops())
     unittest.main()
