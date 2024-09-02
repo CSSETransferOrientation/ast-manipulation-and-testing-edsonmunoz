@@ -9,6 +9,10 @@ experiences.
    one particular difficult bug you encountered.
    I found it really difficult to do this assignment the day it was due. My brain is all gooey after finals and this was a bit of a drag. If you could make it due earlier and assign it earlier I think that would be better. I did not encounter any bugs in the programming really but the tree logic for operators and numbers was a bit tricky to navigate.
 
+;;> I think you took the wrong lesson from that! You are often going to have due dates and exams in various classes line up. It is in your best interest
+;;> to manage things such that you don't have to complete big assignments the day they are due, which is also the date of an exam.
+
+;;> Tests are quite sparse, but the implementation looks great!
 
 ## Acknowledgements
 
